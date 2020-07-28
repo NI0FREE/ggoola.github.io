@@ -53,7 +53,7 @@
                 pixbase = messageObject;
                 for (var i = 1; i<39999; i++) {
                     ctx.fillStyle = "rgb("+pixbase[i].r+","+pixbase[i].g+","+pixbase[i].b+")";
-                    ctx.fillRect(objs[i].x, objs[i].y, 30, 30);
+                    ctx.fillRect(objs[i].x + 1, objs[i].y + 1, 29, 29);
                 }
             });
             var capture = false, cx = 0, cy = 0;
