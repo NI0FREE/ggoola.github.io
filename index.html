@@ -4,8 +4,8 @@
         padding: 0; margin: 0;
     }
     #canvas {
-        width: 4000px;
-        height: 4000px;
+        width: 6000px;
+        height: 6000px;
         position: absolute;
         top: 0px;
         left: 0px;
@@ -20,7 +20,7 @@
     </head>
     <body>
     <div id="window">
-    <canvas id="canvas" width="4000" height="4000" style="cursor: default; top: -12px; left: 0px;"></canvas>
+    <canvas id="canvas" width="6000" height="6000" style="cursor: default; top: -12px; left: 0px;"></canvas>
     </div>
 	<!-- Подключаем jQuery, а также Socket.io -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -32,10 +32,10 @@
             var canvas = document.getElementById('canvas');
             var ctx = canvas.getContext('2d');
             var objs = [];
-            var x = -20, y = 0;
+            var x = -30, y = 0;
             for (var i = 1; i<=39999; i++) {
-                x = x + 20;
-                if (i == ((y+20)/20)*200){y = y + 20; x = 0;}
+                x = x + 30;
+                if (i == ((y+30)/30)*200){y = y + 30; x = 0;}
                 objs.push({
 	            	'x': x,
 	            	'y': y,	    	
@@ -45,7 +45,7 @@
                     'id': i,
 	            })
                 ctx.fillStyle = "rgb("+objs[i-1].r+","+objs[i-1].g+","+objs[i-1].b+")";
-                ctx.fillRect(x, y, 20, 20);
+                ctx.fillRect(x, y, 30, 30);
 		
             }
             var pixbase = [];
@@ -53,7 +53,7 @@
                 pixbase = messageObject;
                 for (var i = 1; i<39999; i++) {
                     ctx.fillStyle = "rgb("+pixbase[i].r+","+pixbase[i].g+","+pixbase[i].b+")";
-                    ctx.fillRect(objs[i].x, objs[i].y, 20, 20);
+                    ctx.fillRect(objs[i].x, objs[i].y, 30, 30);
                 }
             });
             var capture = false, cx = 0, cy = 0;
@@ -83,12 +83,12 @@
 	            for (var i = 1; i<39999; i++) {
                     
 	    	       var o = objs[i-1];
-		           if (o.x < x && x < o.x + 20 && o.y < y && y < 20 + o.y) {
+		           if (o.x < x && x < o.x + 30 && o.y < y && y < 30 + o.y) {
                     console.log(true)
                     let r = 152,g= 0,b=2;
                     var cc = "rgb("+r+","+g+","+b+")";
                     ctx.fillStyle = cc;
-                    ctx.fillRect(o.x + 1 , o.y + 1, 19, 19);
+                    ctx.fillRect(o.x + 1 , o.y + 1, 29, 29);
                     o.r=r;
                     o.g=g;
                     o.b=b;
@@ -110,7 +110,7 @@
                    var oo = messageObject.id;
                    if (o.id == oo) {
                     ctx.fillStyle = "rgb("+oo.r+","+oo.g+","+oo.b+")";
-                    ctx.fillRect(o.x, o.y, 20, 20);
+                    ctx.fillRect(o.x, o.y, 30, 30);
                     
 
                    }}
