@@ -55,6 +55,7 @@
             });
             var capture = false, cx = 0, cy = 0;
             x = 0; y = 0;
+	//FORPHONECAMCONTROL_START
             canvas.addEventListener('touchstart', function (event) {
 	            capture = true;
 	            x = event.touches[0].clientX;
@@ -74,7 +75,26 @@
 		            y = event.touches[0].clientY;	
 	            }
             }, false);
-            
+            //FORPHONECAMCONTROL_END
+			
+	     canvas.addEventListener('mousedown', function (event) {
+	            capture = true;
+	            x = event.clientX;
+	            y = event.clientY;
+            }, false);
+            canvas.addEventListener('mouseup', function () {
+	            capture = false;
+	            canvas.style.cursor = 'default';
+            }, false);
+            canvas.addEventListener('mousemove', function (event) {
+	            if (capture) {
+		            cx -= x - event.clientX, cy -= y - event.clientY;
+		            canvas.style.top  = cy + 'px';
+		            canvas.style.left = cx + 'px';
+		            x = event.clientX;
+		            y = event.clientY;	
+	            }
+            }, false);
                        canvas.addEventListener('click', function (event) {
                 var x = event.clientX - cx, y = event.clientY - cy;
                 console.log(x,y)
