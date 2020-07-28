@@ -67,7 +67,7 @@
             canvas.addEventListener('touchmove', function (event) {
 	            if (capture) {
 			    console.log(x,y,+"!!"+cx,cy);
-		            cx -= x - event.clientX, cy -= y - event.clientY;
+		            cx -= x - event.touches[0].clientX, cy -= y - event.touches[0].clientY;
 		            canvas.style.top  = cy + 'px';
 		            canvas.style.left = cx + 'px';
 		            x = event.touches[0].clientX;
