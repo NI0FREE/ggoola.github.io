@@ -55,22 +55,23 @@
             });
             var capture = false, cx = 0, cy = 0;
             x = 0; y = 0;
-            canvas.addEventListener('mousedown', function (event) {
+            canvas.addEventListener('touchstart', function (event) {
 	            capture = true;
-	            x = event.clientX;
-	            y = event.clientY;
+	            x = event.touches[0].clientX;
+	            y = event.touches[0].clientY;
             }, false);
-            canvas.addEventListener('mouseup', function () {
+            canvas.addEventListener('touchend', function () {
 	            capture = false;
 	            canvas.style.cursor = 'default';
             }, false);
-            canvas.addEventListener('mousemove', function (event) {
+            canvas.addEventListener('touchmove', function (event) {
 	            if (capture) {
+			    console.log(x,y,+"!!"+cx,cy);
 		            cx -= x - event.clientX, cy -= y - event.clientY;
 		            canvas.style.top  = cy + 'px';
 		            canvas.style.left = cx + 'px';
-		            x = event.clientX;
-		            y = event.clientY;	
+		            x = event.touches[0].clientX;
+		            y = event.touches[0].clientY;	
 	            }
             }, false);
             
