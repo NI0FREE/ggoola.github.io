@@ -39,9 +39,9 @@
                 objs.push({
 	            	'x': x,
 	            	'y': y,	    	
-                    'r': 255,
-                    'g': 255,
-                    'b': 221,
+                    'r': 50,
+                    'g': 130,
+                    'b': 184,
                     'id': i,
 	            })
                 ctx.fillStyle = "rgb("+objs[i-1].r+","+objs[i-1].g+","+objs[i-1].b+")";
@@ -80,6 +80,7 @@
                        canvas.addEventListener('click', function (event) {
                 var x = event.clientX - cx, y = event.clientY - cy;
                 console.log(x,y)
+                var sc = 
 	            for (var i = 1; i<39999; i++) {
                     
 	    	       var o = objs[i-1];
@@ -110,7 +111,7 @@
                    var oo = messageObject.id;
                    if (o.id == oo) {
                     ctx.fillStyle = "rgb("+oo.r+","+oo.g+","+oo.b+")";
-                    ctx.fillRect(o.x, o.y, 30, 30);
+                    ctx.fillRect(o.x + 1, o.y + 1, 29, 29);
                     
 
                    }}
