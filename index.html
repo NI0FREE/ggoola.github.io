@@ -46,6 +46,7 @@
 	            })
                 ctx.fillStyle = "rgb("+objs[i-1].r+","+objs[i-1].g+","+objs[i-1].b+")";
                 ctx.fillRect(x, y, 20, 20);
+		console.log(objs[i-1]);
             }
             var pixbase = [];
             socket.on('pixbase', function(messageObject){
