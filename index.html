@@ -76,7 +76,7 @@
 	            }
             }, false);
             
-            canvas.addEventListener('click', function (event) {
+                       canvas.addEventListener('click', function (event) {
                 var x = event.clientX - cx, y = event.clientY - cy;
                 console.log(x,y)
 	            for (var i = 1; i<39999; i++) {
@@ -87,7 +87,7 @@
                     let r = 152,g= 0,b=2;
                     var cc = "rgb("+r+","+g+","+b+")";
                     ctx.fillStyle = cc;
-                    ctx.fillRect(o.x, o.y, 10, 10);
+                    ctx.fillRect(o.x + 0.5 , o.y + 0.5, 9.5, 9.5);
                     o.r=r;
                     o.g=g;
                     o.b=b;
