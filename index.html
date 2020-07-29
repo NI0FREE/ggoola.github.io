@@ -17,7 +17,7 @@
         overflow: hidden;
     }
     </style>
-    <meta name="viewport" content="initial-scale=1, maximum-scale=10, user-scalable=no">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
     </head>
     <body>
     <div id="window">
@@ -75,33 +75,6 @@
 		            y = event.touches[0].clientY;	
 	            }
             }, false);
-                                   canvas.addEventListener('touchend', function (event) { console.log(event.changedTouches[0]);
-                var x = event.changedTouches[0].clientX - cx, y = event.changedTouches[0].clientY - cy;
-               
-                var sc;
-	            for (var i = 1; i<39999; i++) {
-                    
-	    	       var o = objs[i-1];
-		           if (o.x < x && x < o.x + 30 && o.y < y && y < 30 + o.y) {
-                    console.log(true)
-                    let r = 152,g= 0,b=2;
-                    var cc = "rgb("+r+","+g+","+b+")";
-                    ctx.fillStyle = cc;
-                    ctx.fillRect(o.x , o.y, 30, 30);
-                    o.r=r;
-                    o.g=g;
-                    o.b=b;
-				   
-                    socket.emit('message',{
-                     id:o.id,
-                     r:r,
-                     g:g,
-                     b:b
-                    });
-                    break;
-                   }
-                }
-            });
             //zoom
             /*Определяем некоторые переменные*/
             var objzoom = document.getElementById('canvas');
@@ -109,7 +82,7 @@
             var dist = 0;
             var scale_factor = 1.0;
             var curr_scale = 1.0;
-            var max_zoom = 8.0;
+            var max_zoom = 20.0;
             var min_zoom = 0.5
             /*Пишем функцию, которая определяет расстояние меж пальцами*/
             function distance (p1, p2) {
@@ -175,7 +148,34 @@
 		            y = event.clientY;	
 	            }
             }, false);
-
+                       canvas.addEventListener('click', function (event) {
+                
+                var x = event.clientX - cx, y = event.clientY - cy;
+                console.log(x,y)
+                var sc;
+	            for (var i = 1; i<39999; i++) {
+                    
+	    	       var o = objs[i-1];
+		           if (o.x < x && x < o.x + 30 && o.y < y && y < 30 + o.y) {
+                    console.log(true)
+                    let r = 152,g= 0,b=2;
+                    var cc = "rgb("+r+","+g+","+b+")";
+                    ctx.fillStyle = cc;
+                    ctx.fillRect(o.x , o.y, 30, 30);
+                    o.r=r;
+                    o.g=g;
+                    o.b=b;
+				   
+                    socket.emit('message',{
+                     id:o.id,
+                     r:r,
+                     g:g,
+                     b:b
+                    });
+                    break;
+                   }
+                }
+            });
             socket.on('message', function(messageObject){
                 
                 console.log(messageObject);
