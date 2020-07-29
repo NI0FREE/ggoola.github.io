@@ -76,7 +76,7 @@
 	            }
             }, false);
                                    canvas.addEventListener('touchend', function (event) { console.log(event.changedTouches[0]);
-                var x = event.touches[0].clientX - cx, y = event.touches[0].clientY - cy;
+                var x = event.changedTouches[0].clientX - cx, y = event.changedTouches[0].clientY - cy;
                
                 var sc;
 	            for (var i = 1; i<39999; i++) {
