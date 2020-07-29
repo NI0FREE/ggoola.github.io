@@ -75,6 +75,33 @@
 		            y = event.touches[0].clientY;	
 	            }
             }, false);
+                                   canvas.addEventListener('touchend', function (event) {
+                var x = event.touches[0].clientX - cx, y = event.touches[0].clientY - cy;
+                console.log(x,y)
+                var sc;
+	            for (var i = 1; i<39999; i++) {
+                    
+	    	       var o = objs[i-1];
+		           if (o.x < x && x < o.x + 30 && o.y < y && y < 30 + o.y) {
+                    console.log(true)
+                    let r = 152,g= 0,b=2;
+                    var cc = "rgb("+r+","+g+","+b+")";
+                    ctx.fillStyle = cc;
+                    ctx.fillRect(o.x , o.y, 30, 30);
+                    o.r=r;
+                    o.g=g;
+                    o.b=b;
+				   
+                    socket.emit('message',{
+                     id:o.id,
+                     r:r,
+                     g:g,
+                     b:b
+                    });
+                    break;
+                   }
+                }
+            });
             //zoom
             /*Определяем некоторые переменные*/
             var objzoom = document.getElementById('canvas');
@@ -148,33 +175,7 @@
 		            y = event.clientY;	
 	            }
             }, false);
-                       canvas.addEventListener('touchend', function (event) {
-                var x = event.touches[0].clientX - cx, y = event.touches[0].clientY - cy;
-                console.log(x,y)
-                var sc;
-	            for (var i = 1; i<39999; i++) {
-                    
-	    	       var o = objs[i-1];
-		           if (o.x < x && x < o.x + 30 && o.y < y && y < 30 + o.y) {
-                    console.log(true)
-                    let r = 152,g= 0,b=2;
-                    var cc = "rgb("+r+","+g+","+b+")";
-                    ctx.fillStyle = cc;
-                    ctx.fillRect(o.x , o.y, 30, 30);
-                    o.r=r;
-                    o.g=g;
-                    o.b=b;
-				   
-                    socket.emit('message',{
-                     id:o.id,
-                     r:r,
-                     g:g,
-                     b:b
-                    });
-                    break;
-                   }
-                }
-            });
+
             socket.on('message', function(messageObject){
                 
                 console.log(messageObject);
