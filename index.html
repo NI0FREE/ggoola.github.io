@@ -68,7 +68,7 @@
             }, false);
             canvas.addEventListener('touchmove', function (event) {
 	            if (capture) {
-			    console.log(x,y,+"!!"+cx,cy);
+			   
 		            cx -= x - event.touches[0].clientX, cy -= y - event.touches[0].clientY;
 		            canvas.style.top  = cy + 'px';
 		            canvas.style.left = cx + 'px';
@@ -98,7 +98,7 @@
             }, false);
                        canvas.addEventListener('click', function (event) {
                 var x = event.clientX - cx, y = event.clientY - cy;
-                console.log(x,y)
+               
                 var sc;
 	            for (var i = 1; i<39999; i++) {
                     
