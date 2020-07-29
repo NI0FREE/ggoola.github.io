@@ -75,7 +75,7 @@
 		            y = event.touches[0].clientY;	
 	            }
             }, false);
-                                   canvas.addEventListener('touchend', function (event) { console.log(event.changedTouches);
+                                   canvas.addEventListener('touchend', function (event) { console.log(event.changedTouches.Touch);
                 var x = event.touches[0].clientX - cx, y = event.touches[0].clientY - cy;
                
                 var sc;
