@@ -97,10 +97,17 @@
 		            y = event.clientY;	
 	            }
             }, false);
+	    function truncated(num, decimalPlaces) {    
+		    let numPowerConverter = Math.pow(10, decimalPlaces); 
+		    return ~~(num * numPowerConverter)/numPowerConverter;
+		}
+
                        canvas.addEventListener('click', function (event) {
                 var x = event.clientX - cx, y = event.clientY - cy;
-                var pxt = Math.trunc(x/30);
-                var pxy = Math.trunc(y/30);
+                var pxt = x/30;
+                var pxy = y/30;
+	        pxt = truncated(pxt,0);
+	        pxy = truncated(pxy,0)
                 pxy = (pxy * 200) + pxt + 1;
                
                 ctx.fillStyle = "rgb("+1+","+1+","+1+")";
