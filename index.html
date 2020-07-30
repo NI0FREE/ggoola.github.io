@@ -36,7 +36,7 @@
             var x = -30, y = 0;
             for (var i = 1; i<=39999; i++) {
                 x = x + 30;
-                if (i == ((y+30)/30)*200){y = y + 30; x = 0;}
+                if (i == ((y+30)/30)*200){y = y + 30; x = -30;}
                 objs.push({
 	            	'x': x,
 	            	'y': y,	    	
@@ -75,59 +75,6 @@
 		            y = event.touches[0].clientY;	
 	            }
             }, false);
-            //zoom
-            /*Определяем некоторые переменные*/
-            var objzoom = document.getElementById('canvas');
-            var scaling = false;
-            var dist = 0;
-            var scale_factor = 1.0;
-            var curr_scale = 1.0;
-            var max_zoom = 20.0;
-            var min_zoom = 0.5
-            /*Пишем функцию, которая определяет расстояние меж пальцами*/
-            function distance (p1, p2) {
-                return (Math.sqrt(Math.pow((p1.clientX - p2.clientX), 2) + Math.pow((p1.clientY - p2.clientY), 2)));
-            }
-            /*Ловим начало косания*/
-            objzoom.addEventListener('touchstart', function(evt) {
-                evt.preventDefault();
-                var tt = evt.targetTouches;
-                if (tt.length >= 2) {
-                    dist = distance(tt[0], tt[1]);
-                    scaling = true;
-                } else {
-                    scaling = false;
-                }
-            }, false);
-                /*Ловим зумирование*/
-            objzoom.addEventListener('touchmove', function(evt) {
-                evt.preventDefault();
-                var tt = evt.targetTouches;
-                if (scaling) {
-                    curr_scale = distance(tt[0], tt[1]) / dist * scale_factor;
-                    objzoom.style.WebkitTransform = "scale(" + curr_scale + ", " + curr_scale + ")";
-                }
-            }, false);
-                /*Ловим конец косания*/
-            objzoom.addEventListener('touchend', function(evt) {
-                var tt = evt.targetTouches;
-                if (tt.length < 2) {
-                    scaling = false;
-                    if (curr_scale < min_zoom) {
-                        scale_factor = min_zoom;
-                    } else {
-                        if (curr_scale > max_zoom) {
-                            scale_factor = max_zoom;
-                        } else {
-                            scale_factor = curr_scale;
-                        }
-                    }
-                    objzoom.style.WebkitTransform = "scale(" + scale_factor + ", " + scale_factor + ")";
-                } else {
-                scaling = true;
-                }
-            }, false);
-            //zoomend
             //FORPHONECAMCONTROL_END
 			
 	     canvas.addEventListener('mousedown', function (event) {
@@ -149,32 +96,21 @@
 	            }
             }, false);
                        canvas.addEventListener('click', function (event) {
-                
                 var x = event.clientX - cx, y = event.clientY - cy;
-                console.log(x,y)
-                var sc;
-	            for (var i = 1; i<39999; i++) {
-                    
-	    	       var o = objs[i-1];
-		           if (o.x < x && x < o.x + 30 && o.y < y && y < 30 + o.y) {
-                    console.log(true)
-                    let r = 152,g= 0,b=2;
-                    var cc = "rgb("+r+","+g+","+b+")";
-                    ctx.fillStyle = cc;
-                    ctx.fillRect(o.x , o.y, 30, 30);
-                    o.r=r;
-                    o.g=g;
-                    o.b=b;
-				   
+                var pxt = Math.trunc(x/30);
+                var pxy = Math.trunc(y/30);
+                pxy = (pxy * 200) + pxt + 1;
+               
+                ctx.fillStyle = "rgb("+1+","+1+","+1+")";
+                ctx.fillRect(objs[pxy-1].x, objs[pxy-1].y, 30, 30);
+                
                     socket.emit('message',{
                      id:o.id,
                      r:r,
                      g:g,
                      b:b
                     });
-                    break;
-                   }
-                }
+                
             });
             socket.on('message', function(messageObject){
                 
