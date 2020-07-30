@@ -34,6 +34,26 @@
             var ctx = canvas.getContext('2d');
             var objs = [];
             var x = -30, y = 0;
+	                           canvas.addEventListener('click', function (event) {
+                var x = event.clientX - cx, y = event.clientY - cy;
+                var pxt = x/30;
+                var pxy = y/30;
+	        pxt = truncated(pxt,0);
+	        pxy = truncated(pxy,0)
+                pxy = (pxy * 200) + pxt + 1;
+               
+                ctx.fillStyle = "rgb("+1+","+1+","+1+")";
+	        ctx.beginPath();
+                ctx.fillRect(objs[pxy-1].x, objs[pxy-1].y, 30, 30);
+                
+                    socket.emit('message',{
+                     id:o.id,
+                     r:r,
+                     g:g,
+                     b:b
+                    });
+                
+            });
             for (var i = 1; i<=39999; i++) {
                 x = x + 30;
                 if (i == ((y+30)/30)*200){y = y + 30; x = -30;}
@@ -102,26 +122,7 @@
 		    return ~~(num * numPowerConverter)/numPowerConverter;
 		}
 
-                       canvas.addEventListener('click', function (event) {
-                var x = event.clientX - cx, y = event.clientY - cy;
-                var pxt = x/30;
-                var pxy = y/30;
-	        pxt = truncated(pxt,0);
-	        pxy = truncated(pxy,0)
-                pxy = (pxy * 200) + pxt + 1;
-               
-                ctx.fillStyle = "rgb("+1+","+1+","+1+")";
-	        ctx.beginPath();
-                ctx.fillRect(objs[pxy-1].x, objs[pxy-1].y, 30, 30);
-                
-                    socket.emit('message',{
-                     id:o.id,
-                     r:r,
-                     g:g,
-                     b:b
-                    });
-                
-            });
+
             socket.on('message', function(messageObject){
                 
                 console.log(messageObject);
