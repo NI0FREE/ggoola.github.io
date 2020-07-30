@@ -104,6 +104,7 @@
                 pxy = (pxy * 200) + pxt + 1;
                
                 ctx.fillStyle = "rgb("+1+","+1+","+1+")";
+	        ctx.beginPath();
                 ctx.fillRect(objs[pxy-1].x, objs[pxy-1].y, 30, 30);
                 
                     socket.emit('message',{
