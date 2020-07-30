@@ -45,6 +45,8 @@
                     'b': 184,
                     'id': i,
 	            })	
+		    ctx.fillStyle = "rgb("+200+","+200+","+200+")";
+                ctx.fillRect(objs[i-1].x, objs[i-1].y, 30, 30);
             }
             var pixbase = [];
             socket.on('pixbase', function(messageObject){
