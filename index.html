@@ -4,8 +4,8 @@
         padding: 0; margin: 0;
     }
     #canvas {
-        width: 6000px;
-        height: 6000px;
+        width: 5000px;
+        height: 5000px;
         position: absolute;
         top: 0px;
         left: 0px;
@@ -21,7 +21,7 @@
     </head>
     <body>
     <div id="window">
-    <canvas id="canvas" width="6000" height="6000" style="cursor: default; top: -12px; left: 0px;"></canvas>
+    <canvas id="canvas" width="5000" height="5000" style="cursor: default; top: -12px; left: 0px;"></canvas>
     </div>
 	<!-- Подключаем jQuery, а также Socket.io -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -33,18 +33,18 @@
             var canvas = document.getElementById('canvas');
             var ctx = canvas.getContext('2d');
             var objs = [];
-            var x = -30, y = 0;
+            var x = -25, y = 0;
 	                           canvas.addEventListener('click', function (event) {
                 var x = event.clientX - cx, y = event.clientY - cy;
-                var pxt = x/30;
-                var pxy = y/30;
+                var pxt = x/25;
+                var pxy = y/25;
 	        pxt = truncated(pxt,0);
 	        pxy = truncated(pxy,0)
                 pxy = (pxy * 200) + pxt + 1;
                ctx.beginPath();
                 ctx.fillStyle = "rgb("+1+","+1+","+1+")";
 	        
-                ctx.fillRect(objs[pxy-1].x, objs[pxy-1].y, 30, 30);
+                ctx.fillRect(objs[pxy-1].x, objs[pxy-1].y, 25, 25);
                 
                     socket.emit('message',{
                      id:o.id,
@@ -55,8 +55,8 @@
                 
             });
             for (var i = 1; i<=39999; i++) {
-                x = x + 30;
-                if (i == ((y+30)/30)*200){y = y + 30; x = -30;}
+                x = x + 25;
+                if (i == ((y+25)/25)*200){y = y + 25; x = -25;}
                 objs.push({
 	            	'x': x,
 	            	'y': y,	    	
@@ -66,14 +66,14 @@
                     'id': i,
 	            })	
 		    ctx.fillStyle = "rgb("+200+","+200+","+200+")";
-                ctx.fillRect(objs[i-1].x, objs[i-1].y, 30, 30);
+                ctx.fillRect(objs[i-1].x, objs[i-1].y, 25, 25);
             }
             var pixbase = [];
             socket.on('pixbase', function(messageObject){
                 pixbase = messageObject;
                 for (var i = 1; i<39999; i++) {
                     ctx.fillStyle = "rgb("+pixbase[i].r+","+pixbase[i].g+","+pixbase[i].b+")";
-                    ctx.fillRect(objs[i].x, objs[i].y, 30, 30);
+                    ctx.fillRect(objs[i].x, objs[i].y, 25, 25);
                 }
             });
             var capture = false, cx = 0, cy = 0;
@@ -131,7 +131,7 @@
                    var oo = messageObject.id;
                    if (o.id == oo) {
                     ctx.fillStyle = "rgb("+oo.r+","+oo.g+","+oo.b+")";
-                    ctx.fillRect(o.x , o.y , 30, 30);
+                    ctx.fillRect(o.x , o.y , 25, 25);
                     
 
                    }}
