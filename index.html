@@ -37,6 +37,11 @@
             var ctx = canvas.getContext('2d');
             var objs = [];
             var x = -25, y = 0;
+			ctx.imageSmoothingEnabled       = false;
+ctx.webkitImageSmoothingEnabled = false;
+ctx.mozImageSmoothingEnabled    = false;
+ctx.msImageSmoothingEnabled     = false;
+ctx.oImageSmoothingEnabled      = false;
 	                           canvas.addEventListener('click', function (event) {
                 var x = event.clientX - cx, y = event.clientY - cy;
                 var pxt = x/25;
