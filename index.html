@@ -37,11 +37,7 @@
             var ctx = canvas.getContext('2d');
             var objs = [];
             var x = -25, y = 0;
-			ctx.imageSmoothingEnabled       = false;
-ctx.webkitImageSmoothingEnabled = false;
-ctx.mozImageSmoothingEnabled    = false;
-ctx.msImageSmoothingEnabled     = false;
-ctx.oImageSmoothingEnabled      = false;
+
 	                           canvas.addEventListener('click', function (event) {
                 var x = event.clientX - cx, y = event.clientY - cy;
                 var pxt = x/25;
@@ -117,6 +113,11 @@ ctx.oImageSmoothingEnabled      = false;
 	            canvas.style.cursor = 'default';
             }, false);
             canvas.addEventListener('mousemove', function (event) {
+		    			ctx.imageSmoothingEnabled       = false;
+ctx.webkitImageSmoothingEnabled = false;
+ctx.mozImageSmoothingEnabled    = false;
+ctx.msImageSmoothingEnabled     = false;
+ctx.oImageSmoothingEnabled      = false;
 	            if (capture) {
 		            cx -= x - event.clientX, cy -= y - event.clientY;
 		            win1.style.top  = cy + 'px';
