@@ -20,9 +20,11 @@
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
     </head>
     <body>
+	<div id="windowc">    
     <div id="window">
     <canvas id="canvas" width="5000" height="5000" style="cursor: default; top: -12px; left: 0px;"></canvas>
     </div>
+		 </div>
 	<!-- Подключаем jQuery, а также Socket.io -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
@@ -31,6 +33,7 @@
 		window.onload = function(){
             var socket = io.connect('http://localhost:3000'); // Подключились к серверу
             var canvas = document.getElementById('canvas');
+	    var win1 = document.getElementById('windowc');
             var ctx = canvas.getContext('2d');
             var objs = [];
             var x = -25, y = 0;
@@ -111,8 +114,8 @@
             canvas.addEventListener('mousemove', function (event) {
 	            if (capture) {
 		            cx -= x - event.clientX, cy -= y - event.clientY;
-		            canvas.style.top  = cy + 'px';
-		            canvas.style.left = cx + 'px';
+		            win1.style.top  = cy + 'px';
+		            win1.style.left = cx + 'px';
 		            x = event.clientX;
 		            y = event.clientY;	
 	            }
