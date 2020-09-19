@@ -1,100 +1,133 @@
-<html><head>
-    <style text="text/css">
-    html, body {
-        padding: 0; margin: 0;
-    }
-    #canvas {
-        width: 2000px;
-        height: 2000px;
-        position: absolute;
-        top: 0px;
-        left: 0px;
-    }
-    #window {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        overflow: hidden;
-    }
-    </style>
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>JV</title>
+        <link rel="icon" type="image/x-icon" href="assets/img/favicon.ico" />
+        <!-- Font Awesome icons (free version)-->
+        <script src="https://use.fontawesome.com/releases/v5.13.0/js/all.js" crossorigin="anonymous"></script>
+        <!-- Google fonts-->
+        <link href="https://fonts.googleapis.com/css?family=Varela+Round" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet" />
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link href="css/styles.css" rel="stylesheet" />
     </head>
-    <body>
-    <div id="window">
-    <canvas id="canvas" width="2000" height="2000" style="cursor: default;"></canvas>
-    </div>
-    <script type="text/javascript">
-    var canvas = document.getElementById('canvas');
-    var ctx = canvas.getContext('2d');
-    var objs = [], cfp = 200;
-    var color = 'green',cc1= 'black',cc2= 'green',cc3;
-    x=-10;
-    y=0;
-    for (var i = 0; i<40000; i++) {
-        
-        color = '#dddddd';
-        x = x+10;
-        if(i==cfp){x=0;  cc3=cc1;cc1=cc2;cc2=cc3;} 
-        
-        objs.push({
-            'x': x,
-            'y': y,
-            'w': 10,
-            'h': 10,
-            'c': color,
-        })
-        
-        ctx.fillStyle = color;
-        
-        ctx.fillRect(x, y, 10, 10);
-        if(i==cfp){y=y+10;cfp = cfp + 200;}
-    }
-    
-    var capture = false, x = 0, y = 0, cx = 0, cy = 0;
-    
-    canvas.addEventListener('mousedown', function (event) {
-        capture = true;
-        x = event.clientX;
-        y = event.clientY;
-        
-       
-    }, false);
-    
-    canvas.addEventListener('mouseup', function () {
-        capture = false;
-        
-        canvas.style.cursor = 'default';
-    }, false);
-    
-    canvas.addEventListener('mousemove', function (event) {
-        cool();
-        if (capture) {
-            cx -= x - event.clientX, cy -= y - event.clientY;
-            
-            canvas.style.top  = cy + 'px';
-            canvas.style.left = cx + 'px';
-            
-            x = event.clientX;
-            y = event.clientY;	
-        }
-    }, false);
-    function cool(){
-        var x = event.clientX - cx, y = event.clientY - cy;
-        for (var i = 0; i<40000; i++) {
-            var o = objs[i];
-            
-            if (o.x < x && x < o.x + o.w && o.y < y && y < o.h + o.y) {
-             
-                ctx.fillStyle = 'red';
-                ctx.fillRect(o.x, o.y, 10, 10);
-                break;
-            }
-        }
-    }
-    canvas.addEventListener('click', function (event) {
-        var x = event.clientX - cx, y = event.clientY - cy;
+    <body id="page-top">
+        <!-- Navigation-->
+        <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+            <div class="container">
+                <a class="navbar-brand js-scroll-trigger" href="#page-top">     JV</a>
+                <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                    Menu
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarResponsive">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#about">О нас</a></li>
+                        <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#projects">Проекты</a></li>
+                        <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#signup">Контакты</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <!-- Masthead-->
+        <header class="masthead">
+            <div class="container d-flex h-100 align-items-center">
+                <div class="mx-auto text-center">
+                    <h1 class="mx-auto my-0 text-uppercase">Jovian Digitals</h1>
+                    <h2 class="text-white-50 mx-auto mt-2 mb-5">Профессионалы в web разработке.</h2>
+                    <a class="btn btn-primary js-scroll-trigger" href="#about">Начнем</a>
+                </div>
+            </div>
+        </header>
+        <!-- About-->
+        <section class="about-section text-center" id="about">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-8 mx-auto">
+                        <h2 class="text-white mb-4">Кто мы ?</h2>
+                        <p class="text-white-50">
+                            Jovian Digitals это перспективная компания занимающаяся web разработками и начавшая свое развитие в 2020-м году.
+                        </p>
+                    </div>
+                </div>
+                <img class="img-fluid" src="" alt="" />
+            </div>
+        </section>
+        <!-- Projects-->
+        <section class="projects-section bg-light" id="projects">
+            <div class="container">
+                <!-- Featured Project Row-->
+                <div class="row align-items-center no-gutters mb-4 mb-lg-5">
+                    <div class="col-xl-8 col-lg-7"><img class="img-fluid mb-3 mb-lg-0" src="assets/img/bg-masthead.jpg" alt="" /></div>
+                    <div class="col-xl-4 col-lg-5">
+                        <div class="featured-text text-center text-lg-left">
+                            <h4>Наши работы</h4>
+                            <p class="text-black-50 mb-0">/-/-/-/</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Project One Row-->
+                <div class="row justify-content-center no-gutters mb-5 mb-lg-0">
+                    <div class="col-lg-6"><img class="img-fluid" src="assets/img/demo-image-01.jpg" alt="" /></div>
+                    <div class="col-lg-6">
+                        <div class="bg-black text-center h-100 project">
+                            <div class="d-flex h-100">
+                                <div class="project-text w-100 my-auto text-center text-lg-left">
+                                    <h4 class="text-white">Проект #1</h4>
+                                    <p class="mb-0 text-white-50">/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/</p>
+                                    <hr class="d-none d-lg-block mb-0 ml-0" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Project Two Row-->
+                <div class="row justify-content-center no-gutters">
+                    <div class="col-lg-6"><img class="img-fluid" src="assets/img/demo-image-02.jpg" alt="" /></div>
+                    <div class="col-lg-6 order-lg-first">
+                        <div class="bg-black text-center h-100 project">
+                            <div class="d-flex h-100">
+                                <div class="project-text w-100 my-auto text-center text-lg-right">
+                                    <h4 class="text-white">Проект #2</h4>
+                                    <p class="mb-0 text-white-50">/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-
+                                        /-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/</p>
+                                    <hr class="d-none d-lg-block mb-0 mr-0" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Signup-->
+        <section class="signup-section" id="signup">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-10 col-lg-8 mx-auto text-center">
+                        <i class="far fa-paper-plane fa-2x mb-2 text-white"></i>
+                        <h2 class="text-white mb-5">Введите вашу почту, чтобы мы могли связаться с вами!</h2>
+                        <form class="form-inline d-flex">
+                            <input class="form-control flex-fill mr-0 mr-sm-2 mb-3 mb-sm-0" id="inputEmail" type="email" placeholder="так-с моя почта..." />
+                            <button class="btn btn-primary mx-auto" type="submit">ОТПРАВИТЬ</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Contact-->
 
-    }, false);
-    
-    </script>
-    
-    </body></html>
+        <!-- Footer-->
+        <footer class="footer bg-black small text-center text-white-50"><div class="container">Jovian Digitals</div></footer>
+        <!-- Bootstrap core JS-->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.bundle.min.js"></script>
+        <!-- Third party plugin JS-->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
+        <!-- Core theme JS-->
+        <script src="js/scripts.js"></script>
+    </body>
+</html>
