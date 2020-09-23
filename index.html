@@ -4,8 +4,8 @@
         padding: 0; margin: 0;
     }
     #canvas {
-        width: 2000px;
-        height: 2000px;
+        width: 5000px;
+        height: 5000px;
         position: absolute;
         top: 0px;
         left: 0px;
@@ -22,30 +22,49 @@
     <body>
 	<div id="windowc">    
     <div id="window">
-    <canvas id="canvas" width="2000" height="2000" style="cursor: default; top: -12px; left: 0px;"></canvas>
+    <canvas id="canvas" width="5000" height="5000"</canvas>
     </div>
 		 </div>
-
-
+	<!-- Подключаем jQuery, а также Socket.io -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
     
 	<script>
 		window.onload = function(){
-            
+            var socket = io.connect('http://localhost:3000'); // Подключились к серверу
             var canvas = document.getElementById('canvas');
-            var ctx = canvas.getContext('2d', { alpha: false });
+	    var win1 = document.getElementById('windowc');
+            var ctx = canvas.getContext('2d');
             var objs = [];
-            var x = -10, y = 0;
-            
-            ctx.mozImageSmoothingEnabled = false;
-            ctx.webkitImageSmoothingEnabled = false;
-            ctx.msImageSmoothingEnabled = false;
-            ctx.imageSmoothingEnabled = false;
-            ctx.imageSmoothingEnabled = false;
-            pixgen()
-            function pixgen() {
+            var x = -25, y = 0;
+			ctx.imageSmoothingEnabled       = false;
+ctx.webkitImageSmoothingEnabled = false;
+ctx.mozImageSmoothingEnabled    = false;
+ctx.msImageSmoothingEnabled     = false;
+ctx.oImageSmoothingEnabled      = false;
+	                           canvas.addEventListener('click', function (event) {
+                var x = event.clientX - cx, y = event.clientY - cy;
+                var pxt = x/25;
+                var pxy = y/25;
+	        pxt = truncated(pxt,0);
+	        pxy = truncated(pxy,0)
+                pxy = (pxy * 200) + pxt + 1;
+               ctx.beginPath();
+                ctx.fillStyle = "rgb("+1+","+1+","+1+")";
+	        
+                ctx.fillRect(objs[pxy-1].x, objs[pxy-1].y, 25, 25);
+                
+                    socket.emit('message',{
+                     id:o.id,
+                     r:r,
+                     g:g,
+                     b:b
+                    });
+                
+            });
             for (var i = 1; i<=39999; i++) {
-                x = x + 10;
-                if (i == ((y+10)/10)*200){y = y + 10; x = -10;}
+                x = x + 25;
+                if (i == ((y+25)/25)*200){y = y + 25; x = -25;}
                 objs.push({
 	            	'x': x,
 	            	'y': y,	    	
@@ -54,95 +73,80 @@
                     'b': 184,
                     'id': i,
 	            })	
-		    ctx.fillStyle = "rgb("+50+","+130+","+184+")";
-                ctx.fillRect(objs[i-1].x, objs[i-1].y, 10, 10);
-            }console.log("i_generate_pix_wall" +" /*/ "+ objs[0].id)};
-
-            var capture = false, cx = 0, cy = 0,canidraw=0;
+		    ctx.fillStyle = "rgb("+200+","+200+","+200+")";
+                ctx.fillRect(objs[i-1].x, objs[i-1].y, 25, 25);
+            }
+            var pixbase = [];
+            socket.on('pixbase', function(messageObject){
+                pixbase = messageObject;
+                for (var i = 1; i<39999; i++) {
+                    ctx.fillStyle = "rgb("+pixbase[i].r+","+pixbase[i].g+","+pixbase[i].b+")";
+                    ctx.fillRect(objs[i].x, objs[i].y, 25, 25);
+                }
+            });
+            var capture = false, cx = 0, cy = 0;
             x = 0; y = 0;
+	//FORPHONECAMCONTROL_START
+            canvas.addEventListener('touchstart', function (event) {
+	            capture = true;
+	            x = event.touches[0].clientX;
+	            y = event.touches[0].clientY;
+            }, false);
+            canvas.addEventListener('touchend', function () {
+	            capture = false;
+	            canvas.style.cursor = 'default';
+            }, false);
+            canvas.addEventListener('touchmove', function (event) {
+	            if (capture) {
+		            cx -= x - event.touches[0].clientX, cy -= y - event.touches[0].clientY;
+		            canvas.style.top  = cy + 'px';
+		            canvas.style.left = cx + 'px';
+		            x = event.touches[0].clientX;
+		            y = event.touches[0].clientY;	
+	            }
+            }, false);
+            //FORPHONECAMCONTROL_END
+			
 	     canvas.addEventListener('mousedown', function (event) {
 	            capture = true;
 	            x = event.clientX;
 	            y = event.clientY;
-                canvas.style.cursor = 'grab';
-        }, false);
-        canvas.addEventListener('mouseup', function () {
-	        capture = false;
-	        canvas.style.cursor = 'default';
-            if(canidraw == true){console.log("draw");draw()}
-            canidraw = true;
-        }, false);
+            }, false);
+            canvas.addEventListener('mouseup', function () {
+	            capture = false;
+	            
+            }, false);
+            canvas.addEventListener('mousemove', function (event) {
+		    			ctx.imageSmoothingEnabled       = false;
 
-        canvas.addEventListener('mousemove', function (event) {
-	        if (capture) {
-               
-                if (false !=canidraw) {canidraw = false};
-		        cx -= x - event.clientX, cy -= y - event.clientY;
-	            canvas.style.top  = cy + 'px';
-	            canvas.style.left = cx + 'px';
-                x = event.clientX;
-		        y = event.clientY;	
-	        }
-        }, false);
-        function draw(){
+	            if (capture) {
+		            cx -= x - event.clientX, cy -= y - event.clientY;
+		            canvas.style.top  = cy + 'px';
+		            canvas.style.left = cx + 'px';
+		            x = event.clientX;
+		            y = event.clientY;	
+	            }
+            }, false);
+	    function truncated(num, decimalPlaces) {    
+		    let numPowerConverter = Math.pow(10, decimalPlaces); 
+		    return ~~(num * numPowerConverter)/numPowerConverter;
+		}
 
-            var dx, dy, idd;
-            dx = event.clientX - cx;
-            dy = event.clientY - cy;
-            if (scale - 1 > 0){
-            dx = dx + 1000 * (scale - 1);
-            dy = dy + 1000 * (scale - 1);
-            dx = dx / scale;
-            dy = dy / scale;
-            }
-            console.log(dy + "/*/" + dx)
-            dx = Math.trunc(dx / 10);
-            dy = Math.trunc(dy / 10);
-            console.log(dy + "/*/" + dx)
-            idd = dx + dy * 200;
-            ctx.fillStyle = "blue";
-            var o = objs[idd];
-            
-            ctx.fillRect(o.x , o.y, 10, 10);
-            console.log(o.id)
-            console.log(ctx)
-        }
-    }
-    </script>
-      <script>
-        function addOnWheel(elem, handler) {
-          if (elem.addEventListener) {
-            if ('onwheel' in document) {
-              // IE9+, FF17+
-              elem.addEventListener("wheel", handler);
-            } else if ('onmousewheel' in document) {
-              // устаревший вариант события
-              elem.addEventListener("mousewheel", handler);
-            } else {
-              // 3.5 <= Firefox < 17, более старое событие DOMMouseScroll пропустим
-              elem.addEventListener("MozMousePixelScroll", handler);
-            }
-          } else { // IE8-
-            text.attachEvent("onmousewheel", handler);
-          }
-        }
-    
-        var scale = 1;
-    
-        addOnWheel(canvas, function(e) {
-    
-          var delta = e.deltaY || e.detail || e.wheelDelta;
-    
-          // отмасштабируем при помощи CSS
-          if (delta > 0) scale += 1;
-          else if(scale != 1) scale -= 1;
-    
-          canvas.style.transform = canvas.style.WebkitTransform = canvas.style.MsTransform = 'scale(' + scale + ')';
-    
-          // отменим прокрутку
-          e.preventDefault();
-        });
-      </script>
-    
+
+            socket.on('message', function(messageObject){
+                
+                console.log(messageObject);
+                for (var i = 1; i<39999; i++) {
+                   var o = objs[i];
+                   var oo = messageObject.id;
+                   if (o.id == oo) {
+                    ctx.fillStyle = "rgb("+oo.r+","+oo.g+","+oo.b+")";
+                    ctx.fillRect(o.x , o.y , 25, 25);
+                    
+
+                   }}
+                 });
+        };
+	</script>
 
 </body></html>
