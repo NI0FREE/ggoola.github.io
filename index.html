@@ -3,150 +3,203 @@
     html, body {
         padding: 0; margin: 0;
     }
-    #canvas {
-        width: 5000px;
-        height: 5000px;
-        position: absolute;
-        top: 0px;
-        left: 0px;
-    }
+
     #window {
         position: absolute;
         width: 100%;
         height: 100%;
         overflow: hidden;
     }
+    #largecanv {
+      width: 3000px;
+        height: 3000px;
+        position: absolute;
+        top: 0px;
+        left: 0px;
+    
+}
     </style>
+
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
     </head>
     <body>
 	<div id="windowc">    
     <div id="window">
-    <canvas id="canvas" width="5000" height="5000"</canvas>
+      <div id="layer2">
+        <canvas id="largecanv" width="3000" height="3000" style="transform: translateX(1x); top: 1px; left: 1px;"></canvas>
+        <canvas id="littlcanv" width="200" height="200"></canvas>
+      </div>
     </div>
-		 </div>
-	<!-- Подключаем jQuery, а также Socket.io -->
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
-    
+  </div>
 	<script>
-		window.onload = function(){
-            var socket = io.connect('http://localhost:3000'); // Подключились к серверу
-            var canvas = document.getElementById('canvas');
-	    var win1 = document.getElementById('windowc');
-            var ctx = canvas.getContext('2d');
-            var objs = [];
-            var x = -25, y = 0;
-			ctx.imageSmoothingEnabled       = false;
-ctx.webkitImageSmoothingEnabled = false;
-ctx.mozImageSmoothingEnabled    = false;
-ctx.msImageSmoothingEnabled     = false;
-ctx.oImageSmoothingEnabled      = false;
-	                           canvas.addEventListener('click', function (event) {
-                var x = event.clientX - cx, y = event.clientY - cy;
-                var pxt = x/25;
-                var pxy = y/25;
-	        pxt = truncated(pxt,0);
-	        pxy = truncated(pxy,0)
-                pxy = (pxy * 200) + pxt + 1;
-               ctx.beginPath();
-                ctx.fillStyle = "rgb("+1+","+1+","+1+")";
-	        
-                ctx.fillRect(objs[pxy-1].x, objs[pxy-1].y, 25, 25);
-                
-                    socket.emit('message',{
-                     id:o.id,
-                     r:r,
-                     g:g,
-                     b:b
-                    });
-                
-            });
-            for (var i = 1; i<=39999; i++) {
-                x = x + 25;
-                if (i == ((y+25)/25)*200){y = y + 25; x = -25;}
-                objs.push({
-	            	'x': x,
-	            	'y': y,	    	
-                    'r': 50,
-                    'g': 130,
-                    'b': 184,
-                    'id': i,
-	            })	
-		    ctx.fillStyle = "rgb("+200+","+200+","+200+")";
-                ctx.fillRect(objs[i-1].x, objs[i-1].y, 25, 25);
-            }
-            var pixbase = [];
-            socket.on('pixbase', function(messageObject){
-                pixbase = messageObject;
-                for (var i = 1; i<39999; i++) {
-                    ctx.fillStyle = "rgb("+pixbase[i].r+","+pixbase[i].g+","+pixbase[i].b+")";
-                    ctx.fillRect(objs[i].x, objs[i].y, 25, 25);
-                }
-            });
-            var capture = false, cx = 0, cy = 0;
-            x = 0; y = 0;
-	//FORPHONECAMCONTROL_START
-            canvas.addEventListener('touchstart', function (event) {
-	            capture = true;
-	            x = event.touches[0].clientX;
-	            y = event.touches[0].clientY;
-            }, false);
-            canvas.addEventListener('touchend', function () {
-	            capture = false;
-	            canvas.style.cursor = 'default';
-            }, false);
-            canvas.addEventListener('touchmove', function (event) {
-	            if (capture) {
-		            cx -= x - event.touches[0].clientX, cy -= y - event.touches[0].clientY;
-		            canvas.style.top  = cy + 'px';
-		            canvas.style.left = cx + 'px';
-		            x = event.touches[0].clientX;
-		            y = event.touches[0].clientY;	
-	            }
-            }, false);
-            //FORPHONECAMCONTROL_END
-			
-	     canvas.addEventListener('mousedown', function (event) {
-	            capture = true;
+	//	window.onload = function(){
+        let bcanv = document.getElementById('largecanv');
+        let lcanv = document.getElementById('littlcanv');
+        let camer = document.getElementById('layer2');
+        let slesh = document.getElementById('window');
+        let ctx   = bcanv.getContext('2d', { alpha: false });
+        let dtx   = lcanv.getContext('2d', { alpha: false });
+        document.getElementById('littlcanv').remove()
+        //Убираем размытие
+        ctx.mozImageSmoothingEnabled = false;ctx.webkitImageSmoothingEnabled = false;ctx.msImageSmoothingEnabled = false;ctx.imageSmoothingEnabled = false;dtx.mozImageSmoothingEnabled = false;dtx.webkitImageSmoothingEnabled = false;dtx.msImageSmoothingEnabled = false;dtx.imageSmoothingEnabled = false;
+        //
+        //Определение телефон ли это
+        var iphone = 0;
+        if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent)) {
+
+          iphone = 1;
+
+        } 
+        //
+        var x = 0, y =0; let pixlb = [];
+        wallOfPixelsGen()
+        function wallOfPixelsGen(){
+          for (var i = 0; i<=40000; i++) {
+            if (i == ((y+1)/1)*200) {y = y + 1; x = 0;}
+
+            pixlb.push({
+	          	'x': x,
+	          	'y': y,	    	
+              'r': 50,
+              'g': 130,
+              'b': 184,
+              'id': i+1,
+	          });
+
+		        dtx.fillStyle = "rgb("+randomInteger(1, 150)+","+randomInteger(1, 150)+","+randomInteger(1, 150)+")";
+            dtx.fillRect(pixlb[i].x, pixlb[i].y, 1, 1);
+            x = x + 1;
+            };
+            ctx.drawImage(lcanv, 0, 0, 3000, 3000);
+        }
+        //Навигация по большому канвасу (PC)
+        if(iphone!=1){
+        var capture = false, cx = 0, cy = 0,canidraw=0;
+
+        bcanv.addEventListener('mouseup', function () {
+	        capture = false;
+	        bcanv.style.cursor = 'default';
+          if(canidraw == true){draw(cx,cy,event.clientX,event.clientY); console.log("Пытаюсь рисовать..")}
+          canidraw = true;
+        }, false);
+
+        bcanv.addEventListener('mousedown', function (event) {
+          capture = true;
 	            x = event.clientX;
 	            y = event.clientY;
-            }, false);
-            canvas.addEventListener('mouseup', function () {
-	            capture = false;
-	            
-            }, false);
-            canvas.addEventListener('mousemove', function (event) {
-		    			ctx.imageSmoothingEnabled       = false;
+              
+        }, false)
 
-	            if (capture) {
-		            cx -= x - event.clientX, cy -= y - event.clientY;
-		            canvas.style.top  = cy + 'px';
-		            canvas.style.left = cx + 'px';
-		            x = event.clientX;
-		            y = event.clientY;	
-	            }
-            }, false);
-	    function truncated(num, decimalPlaces) {    
-		    let numPowerConverter = Math.pow(10, decimalPlaces); 
-		    return ~~(num * numPowerConverter)/numPowerConverter;
-		}
+        bcanv.addEventListener('mousemove', function (event) {
+          
+	        if (capture) {
+            if (false !=canidraw) {canidraw = false};
+		        cx -= x - event.clientX, cy -= y - event.clientY;
+            slesh.style = "top: "+cy+"px; left: "+cx+"px;";
+            x = event.clientX;
+		        y = event.clientY;	
+	        }
+        }, false);
+        }
+        //Навигация по большому канвасу (PHONE)
+        var captureP = false, cxP = 0, cyP = 0,canidrawP=0;
+        let levent;
+        bcanv.addEventListener("touchend", function (event) {
+	        captureP = false;
+	        
+          if(canidrawP == true){draw(cxP,cyP,levent.touches[0].clientX,levent.touches[0].clientY); console.log("Пытаюсь рисовать..")}
+          canidrawP = true;
+        }, false);
+
+        bcanv.addEventListener("touchstart", function (event) {
+          levent = event;
+          captureP = true;
+	            x = event.touches[0].clientX;
+	            y = event.touches[0].clientY;
+           
+        }, false)
+
+        bcanv.addEventListener("touchmove", function (event) {
+          
+	        if (captureP) {
+            if (false !=canidrawP) {canidrawP = false};
+		        cxP -= x - event.touches[0].clientX, cyP -= y - event.touches[0].clientY;
+            
+            slesh.style = "top: "+cyP+"px; left: "+cxP+"px;";
+            
+  
+            x = event.touches[0].clientX;
+		        y = event.touches[0].clientY;	
+            
+	        }
+        }, false);
 
 
-            socket.on('message', function(messageObject){
-                
-                console.log(messageObject);
-                for (var i = 1; i<39999; i++) {
-                   var o = objs[i];
-                   var oo = messageObject.id;
-                   if (o.id == oo) {
-                    ctx.fillStyle = "rgb("+oo.r+","+oo.g+","+oo.b+")";
-                    ctx.fillRect(o.x , o.y , 25, 25);
-                    
 
-                   }}
-                 });
-        };
-	</script>
+        //
+
+        let path1 = new Path2D();
+        function draw(cx,cy,evx,evy){
+          var dx, dy, idd;
+          dx = evx - cx;
+          dy = evy - cy;
+          dx = Math.trunc(dx / 15);
+          dy = Math.trunc(dy / 15);
+          idd = dx + dy * 200;
+          var o = pixlb[idd];
+          dtx.fillStyle = "red";
+          path1.rect(o.x , o.y, 1, 1);
+          dtx.fill(path1);
+          ctx.drawImage(lcanv, 0, 0, 3000, 3000);
+        }
+
+        //Увеличение колесиком мыши
+        
+        function addOnWheel(elem, handler) {
+          if (elem.addEventListener) {
+            if ('onwheel' in document) {
+              elem.addEventListener("wheel", handler);
+            } else if ('onmousewheel' in document) {
+              elem.addEventListener("mousewheel", handler);
+            } else {
+              elem.addEventListener("MozMousePixelScroll", handler);
+            }
+          } else {
+            text.attachEvent("onmousewheel", handler);
+          }
+        }
+        var scale = 1; var tsx,tsy;
+        addOnWheel(camer, function(e) {
+          dx = event.clientX - cx;
+          dy = event.clientY - cy;
+          dx = Math.trunc(dx);
+          dy = Math.trunc(dy);
+          var delta = e.deltaY || e.detail || e.wheelDelta;
+          
+          if (delta > 0){
+            if (scale < 1){
+            scale = scale + 0.02;
+            camer.style.transform = camer.style.WebkitTransform = camer.style.MsTransform = 'scale(' + scale + ')';
+            }
+          }
+          else if(scale != 0.2) {
+            scale = scale - 0.02;
+            scale = scale *100;
+            scale = Math.round(scale);
+            scale = scale / 100;
+            
+            camer.style.transform = camer.style.WebkitTransform = camer.style.MsTransform = 'scale(' + scale + ')';
+          };
+          e.preventDefault();
+        });
+    //}
+        function randomInteger(min, max) {
+  // случайное число от min до (max+1)
+           let rand = min + Math.random() * (max + 1 - min);
+          return Math.floor(rand);
+        }
+
+      </script>
+    
 
 </body></html>
